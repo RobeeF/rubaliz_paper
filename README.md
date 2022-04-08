@@ -1,4 +1,17 @@
-![RUBALIZ_logo](RUBALIZ_logo.png)
+<div align="center">
+  <img src="RUBALIZ_logo.png" alt="RUBALIZ_logo"/>
+</div>
+
+<br/>
+
+<div align="center">
+   <!-- Zenodo -->
+  <a href="https://doi.org/10.5281/zenodo.6425451">
+    <img src="https://zenodo.org/badge/doi/10.5281/zenodo.6425452.svg" alt="pypi" />
+  </a>
+</div>
+
+<br/>
 
 This repository aims to reproduce the results from Fuchs, Baumas et al. (2022).
 Before proceeding, please install:
