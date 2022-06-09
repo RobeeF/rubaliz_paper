@@ -6,9 +6,9 @@
 
 <div align="center">
    <!-- Zenodo -->
-  <a href="https://zenodo.org/badge/latestdoi/481310712">
-     <img src="https://zenodo.org/badge/481310712.svg" alt="DOI">
-  </a>
+<a href="https://zenodo.org/badge/latestdoi/478218364">
+  <img src="https://zenodo.org/badge/478218364.svg" alt="DOI">
+</a>
 </div>
 
 <br/>
