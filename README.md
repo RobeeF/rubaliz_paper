@@ -6,8 +6,8 @@
 
 <div align="center">
    <!-- Zenodo -->
-  <a href="https://doi.org/10.5281/zenodo.6425451">
-    <img src="https://zenodo.org/badge/doi/10.5281/zenodo.6425452.svg" alt="pypi" />
+  <a href="https://zenodo.org/badge/latestdoi/481310712">
+     <img src="https://zenodo.org/badge/481310712.svg" alt="DOI">
   </a>
 </div>
 
