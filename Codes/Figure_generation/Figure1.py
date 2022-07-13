@@ -11,7 +11,7 @@ import json
 import pandas as pd
 import seaborn as sns
 from rubaliz import rubaliz
-from seabird.cnv import fCNV
+from rubaliz.seabird.cnv import fCNV
 import matplotlib.pyplot as plt
 
 # Change it with your path

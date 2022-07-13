@@ -33,7 +33,7 @@ for info_dict in info_dicts:
         cols_aliases = ['Fluorescence', 'Oxygen', 'Pot. temp.', 'Salinity', 'Density']
 
     #==================================
-    # Euphotic extraction
+    # Upper boundary extraction
     #==================================
     
     # Fit the model on the full data
@@ -81,7 +81,7 @@ for info_dict in info_dicts:
     delta['cruise'] = ruba.cruise
     delta['station'] = ruba.station     
 
-    deltas = deltas.append(delta)
+    deltas = pd.concat([deltas, delta])
  
 #==================================
 # Plotting the sensibility analysis

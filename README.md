@@ -37,3 +37,5 @@ Example in Codes/integration.R line 13:
 ```R
 setwd('replace/this/path/with/the/root/directory/path/on/your/computer')
 ```
+More information on how to use the RUBALIZ method for your use case can be found here:
+https://github.com/RobeeF/rubaliz
