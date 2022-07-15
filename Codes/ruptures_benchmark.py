@@ -58,22 +58,21 @@ for campaign in campaigns:
     elif (campaign == 'PEACETIME') | (campaign == 'DY032'):
         fluo_col = 'flC'
         pres_col = 'PRES'
-        density_col = 'sigma-�00'
+        density_col = 'sigma-é00'
         temp_col = 'TEMP'
-        cols = ['flC', 'oxygen', 'potemperature', 'PSAL', 'sigma-�00']
+        cols = ['flC', 'oxygen', 'potemperature', 'PSAL', 'sigma-é00']
         
     else:
         fluo_col = 'flC'
         pres_col = 'PRES'
-        density_col = 'sigma-�00'
+        density_col = 'sigma-é00'
         temp_col = 'TEMP'
-        cols = ['flC', 'sbox0Mm/Kg', 'potemperature', 'PSAL', 'sigma-�00']  
+        cols = ['flC', 'sbox0Mm/Kg', 'potemperature', 'PSAL', 'sigma-é00']  
         
     par_col = 'PAR' if campaign == 'D341' else 'par'
     stations = os.listdir('Data/ruptures/' + campaign)
     
     for station in stations:
-        print(campaign, station)
         
         folder = 'ruptures/' + campaign + '/' + station + '/'
         files = os.listdir('Data/' + folder)

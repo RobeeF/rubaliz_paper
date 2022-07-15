@@ -59,14 +59,12 @@ zones.loc[:,['Upper boundary', 'Lower boundary']] =\
     zones[['Upper boundary', 'Lower boundary']].round(0)
 
    
-#zones.to_csv('Results/ruptures/zones.csv', index = False)
-
 zones_allvars = pd.read_csv('Results/ruptures/zones.csv')
 
 plt.scatter(zones_allvars['Upper boundary'], zones['Upper boundary'])
-plt.scatter(zones_allvars['Mesopelagic end'], zones['Mesopelagic end'])
+plt.scatter(zones_allvars['Lower boundary'], zones['Lower boundary'])
 
-delta_upper = (zones_allvars['Euphotic end'] - zones['Euphotic end']).abs().median()
+delta_upper = (zones_allvars['Upper boundary'] - zones['Upper boundary']).abs().median()
 delta_lower = (zones_allvars['Lower boundary'] - zones['Lower boundary']).abs().median()
 
 deltas = np.array([delta_upper, delta_lower]).reshape(1,-1)

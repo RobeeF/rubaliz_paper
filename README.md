@@ -19,6 +19,8 @@ Before proceeding, please install:
 - Spyder https://www.anaconda.com/products/individual
 - R https://cran.r-project.org/bin/windows/base/ and Rstudio https://www.rstudio.com/products/rstudio/download/
 - The rubaliz package: https://github.com/RobeeF/rubaliz
+All these steps are described in detail in the RUBALIZ package repository: https://github.com/RobeeF/rubaliz
+- Other packages needed: seaborn, matplotlib
 
 Download this repository using GitHub Desktop or by downloading the zip directly.
 To do so, click on the green "Code" menu in the top right and choose the desired option.  
