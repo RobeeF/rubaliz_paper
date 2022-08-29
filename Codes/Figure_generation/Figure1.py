@@ -11,7 +11,7 @@ import json
 import pandas as pd
 import seaborn as sns
 from rubaliz import rubaliz
-from seabird.cnv import fCNV
+from rubaliz.seabird.cnv import fCNV
 import matplotlib.pyplot as plt
 
 # Change it with your path
@@ -19,11 +19,12 @@ os.chdir('C:/Users/rfuchs/Documents/GitHub/rubaliz_paper/')
 
 # Import campaigns metadata and importation settings
 path = 'info_dicts.json'
-with open(path, "r") as read_file:
+with open(path, "r", encoding = 'UTF-8') as read_file:
     info_dicts = json.load(read_file)
  
-cruise = 'MALINA'
-station = '430'
+ 
+cruise = 'DY032'
+station = 'PAP'
 info_dict = [d for d in info_dicts if (d['cruise_name'] == cruise)\
              & (d['station_name'] == station)][0]
 
@@ -68,8 +69,8 @@ for file in files:
 rupt_path = os.path.join('Results', 'ruptures', 'zones.csv')
 ruptures = pd.read_csv(rupt_path)
 rpts = ruptures[(ruptures['cruise'] == cruise) &\
-                (ruptures['station'] == station)][['Euphotic end',\
-                            'Mesopelagic end']].values[0]
+                (ruptures['station'] == station)][['Upper boundary',\
+                            'Lower boundary']].values[0]
 # Define the colors 
 eupho_color = 'lightgray'
 meso_color = 'slategrey'
@@ -157,7 +158,7 @@ for signal in signals:
     par3.set_xlabel(cols_aliases[3] + ' ' + cols_units[3], fontsize = 11)
     par4.set_xlabel(cols_aliases[4] + ' ' + cols_units[4], fontsize = 11)
     
-    host.axhspan(0, rpts[0], facecolor = eupho_color, alpha=0.3, label = 'Euphotic zone')
+    host.axhspan(0, rpts[0], facecolor = eupho_color, alpha=0.3, label = 'Upper zone')
     host.axhspan(rpts[0], rpts[1], facecolor = meso_color, alpha=0.3, label = 'Mesopelagic zone')
     
     host.set_title(info_dict['station_name'], fontsize = 16) 

@@ -38,9 +38,10 @@ methods = disc['Method']
 # Plot
 #=====================
 
-g = sns.heatmap(hm, vmin = -1100, vmax = 200, cmap = sns.color_palette("Spectral", as_cmap=True), square = True)
+g = sns.heatmap(hm, vmin = -1100, vmax = 200, cmap = sns.color_palette("Spectral", as_cmap=True))
 g.set_facecolor('grey')
 plt.title('Discrepancy $\Delta$ (mgC $m^{-2}d^{-1}$)')
 plt.tight_layout()
 plt.show()
 
+disc.columns

@@ -8,7 +8,7 @@ setwd('C:/Users/rfuchs/Documents/GitHub/rubaliz_paper/')
 
 # Import the limits of the mesopelagic sublayers
 zones = read.csv('Results/ruptures/zones.csv')
-zones['mesopelagic boundaries'] = str_c('(',str_c(round(zones$Euphotic.end, 0), ' ; ', round(zones$Mesopelagic.end, 0)), ')')
+zones['mesopelagic boundaries'] = str_c('(',str_c(round(zones$Upper.boundary, 0), ' ; ', round(zones$Lower.boundary, 0)), ')')
 zones = zones[,c('cruise', 'station',  'mesopelagic boundaries')]
 
 # Import the integrated PHP values

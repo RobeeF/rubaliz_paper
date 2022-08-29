@@ -10,8 +10,7 @@ import re
 import os 
 import numpy as np
 import pandas as pd
-#from rubaliz import rubaliz
-from seabird.cnv import fCNV
+from rubaliz.seabird import fCNV
 
 # Change it with your path
 os.chdir('C:/Users/rfuchs/Documents/GitHub/rubaliz_paper/')
@@ -59,22 +58,21 @@ for campaign in campaigns:
     elif (campaign == 'PEACETIME') | (campaign == 'DY032'):
         fluo_col = 'flC'
         pres_col = 'PRES'
-        density_col = 'sigma-�00'
+        density_col = 'sigma-é00'
         temp_col = 'TEMP'
-        cols = ['flC', 'oxygen', 'potemperature', 'PSAL', 'sigma-�00']
+        cols = ['flC', 'oxygen', 'potemperature', 'PSAL', 'sigma-é00']
         
     else:
         fluo_col = 'flC'
         pres_col = 'PRES'
-        density_col = 'sigma-�00'
+        density_col = 'sigma-é00'
         temp_col = 'TEMP'
-        cols = ['flC', 'sbox0Mm/Kg', 'potemperature', 'PSAL', 'sigma-�00']  
+        cols = ['flC', 'sbox0Mm/Kg', 'potemperature', 'PSAL', 'sigma-é00']  
         
     par_col = 'PAR' if campaign == 'D341' else 'par'
     stations = os.listdir('Data/ruptures/' + campaign)
     
     for station in stations:
-        print(campaign, station)
         
         folder = 'ruptures/' + campaign + '/' + station + '/'
         files = os.listdir('Data/' + folder)
@@ -221,15 +219,17 @@ for campaign in campaigns:
  
         # PPZ signal handling
         ppz_end = np.nanmean(ppz_ends) 
-
-        benchmark = benchmark.append({'cruise': campaign, 'station': station,\
+        
+        ind_benchmark = pd.DataFrame.from_dict({'cruise': campaign, 'station': station,\
                                   '1% PAR': round(euphotic_par_end, 0),\
                                   '0.1% PAR': round(euphotic_par_end_01, 0),\
                                   'MLD temp': round(euphotic_mld_end_temp, 0),\
                                   'MLD sigma': round(euphotic_mld_end_sigma, 0),\
                                   'PPZ': round(ppz_end, 0),\
-                                  }, ignore_index = True)
-    
+                                  }, orient = 'index').T
+            
+        benchmark = pd.concat([benchmark, ind_benchmark])
+        
 #==================================================
 # Store the determined zones
 #==================================================

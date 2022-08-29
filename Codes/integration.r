@@ -51,7 +51,7 @@ for (method in methods){
   pred.resolution3 = 10000
 
   for (cruise in cruises){
-
+    
     # Keep only the stations that present a rupture
     if (method == 'RUBALIZ'){
       stations <- rubaliz[rubaliz$cruise == cruise,]$station
@@ -62,8 +62,8 @@ for (method in methods){
                                 c('cruise', 'station', method)]
       rupt.cruise[, method] = round(rupt.cruise[, method], 0)
 
-      rupt.cruise[,'Mesopelagic.end'] = 1000 # No lower boundaries for benchmark methods
-      colnames(rupt.cruise) = c('cruise', 'station', 'Euphotic.end', 'Mesopelagic.end')
+      rupt.cruise[,'Lower.boundary'] = 1000 # No lower boundaries for benchmark methods
+      colnames(rupt.cruise) = c('cruise', 'station', 'Upper.boundary', 'Lower.boundary')
     }
 
     for (station in stations){
@@ -77,8 +77,8 @@ for (method in methods){
       # Set the limit of the mesopelagic zone
       rupt.station = rupt.cruise[rupt.cruise$station == station,]
 
-      xmin = rupt.station$Euphotic.end
-      xmax = rupt.station$Mesopelagic.end
+      xmin = rupt.station$Upper.boundary
+      xmax = rupt.station$Lower.boundary
 
       # If the boundary is missing do not output this station for the given method
       if (is.na(xmin)){

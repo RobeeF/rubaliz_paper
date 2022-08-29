@@ -17,7 +17,7 @@ os.chdir('C:/Users/rfuchs/Documents/GitHub/rubaliz_paper/')
 
 # Import campaigns metadata and importation settings
 path = 'info_dicts.json'
-with open(path, "r") as read_file:
+with open(path, "r", encoding = 'UTF-8') as read_file:
     info_dicts = json.load(read_file)
     
 #==================================
@@ -33,7 +33,7 @@ for info_dict in info_dicts:
         cols_aliases = ['Fluorescence', 'Oxygen', 'Pot. temp.', 'Salinity', 'Density']
 
     #==================================
-    # Euphotic extraction
+    # Upper boundary extraction
     #==================================
     
     # Fit the model on the full data
@@ -56,7 +56,7 @@ for info_dict in info_dicts:
         hold_out_one_var = ub_data.loc[:,~ub_data.columns.isin([col])]
         ub = ruba.rupture_confidence_interval(hold_out_one_var, 1, [280, 320])
         ub.index = [col_alias]
-        ub_holdout = ub_holdout.append(ub)
+        ub_holdout = pd.concat([ub_holdout, ub])
 
         #===============================
         # Lower boundary sensitivity
@@ -66,7 +66,7 @@ for info_dict in info_dicts:
         hold_out_one_var = lb_data.loc[:,~lb_data.columns.isin([col])]
         lb = ruba.rupture_confidence_interval(hold_out_one_var, 1, [1000, 1300])
         lb.index = [col_alias]
-        lb_holdout = lb_holdout.append(lb)
+        lb_holdout = pd.concat([lb_holdout, lb])
     
     #===============================
     # Wrap up
@@ -81,7 +81,7 @@ for info_dict in info_dicts:
     delta['cruise'] = ruba.cruise
     delta['station'] = ruba.station     
 
-    deltas = deltas.append(delta)
+    deltas = pd.concat([deltas, delta])
  
 #==================================
 # Plotting the sensibility analysis
