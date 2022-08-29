@@ -18,6 +18,8 @@ import matplotlib.pyplot as plt
 # Change with your path:
 os.chdir('C:/Users/rfuchs/Documents/GitHub/rubaliz_paper/')
 
+from Codes.Figure_generation.noise_generation import blue_noise, pink_noise, white_noise
+
 #==================================
 # Without fluo and [02]
 #==================================
@@ -80,41 +82,96 @@ n_noisevars = 10
 depth_max = 1300
 n_samples, dim, sigma = depth_max, 1, 1
 n_bkps = 2  # number of breakpoints
-delta = [0.1,0.6]
-signal, bkps = rpt.pw_constant(n_samples, dim, n_bkps, noise_std=sigma, delta = delta)
+delta = [0.6,-0.4]
 
-signal_noised = deepcopy(signal)
-result_noise = rpt.Binseg(model="rbf").fit(signal_noised).predict(n_bkps=2)
 
-bkps_noise = [result_noise]
+bkps = [440, 865, 1300]
+signal = white_noise(depth_max)
+signal[bkps[0]:bkps[1]] = signal[bkps[0]:bkps[1]] + delta[0]
+signal[bkps[1]:] = signal[bkps[1]:] + delta[1]
+signal = signal[...,np.newaxis]
+
+#delta = [0.3,0.6]
+#signal, bkps = rpt.pw_constant(n_samples, dim, n_bkps, noise_std=sigma, delta = delta)
+
+signals_noised = {}
+signals_noised['white'] = deepcopy(signal)
+signals_noised['blue'] = deepcopy(signal)
+signals_noised['pink'] = deepcopy(signal)
+signals_noised['red'] = deepcopy(signal)
+
+results_noise = {}
+results_noise['white'] = rpt.Binseg(model="rbf").fit(signal).predict(n_bkps=2)
+print(bkps)
+print(results_noise['white'])
+results_noise['blue'] = rpt.Binseg(model="rbf").fit(signal).predict(n_bkps=2)
+results_noise['pink'] = rpt.Binseg(model="rbf").fit(signal).predict(n_bkps=2)
+results_noise['red'] = rpt.Binseg(model="rbf").fit(signal).predict(n_bkps=2)
+
+bkps_noises = {}
+bkps_noises['white'] = [results_noise['white']]
+bkps_noises['blue'] = [results_noise['blue']]
+bkps_noises['pink'] = [results_noise['pink']]
+bkps_noises['red'] = [results_noise['red']]
+
+#bkps_noise = [result_noise]
 
 for noise_idx in range(n_noisevars):
-    noise = np.random.normal(0.5, sigma, 1300)[..., np.newaxis]
-    signal_noised = np.concatenate([signal_noised, noise], axis = 1)
-    result_noise = rpt.Binseg(model="rbf").fit(signal_noised).predict(n_bkps=2)
-    bkps_noise.append(result_noise)
-
-result_noise = rpt.Binseg(model="rbf").fit(signal_noised).predict(n_bkps=2)
-fig, axs = rpt.display(signal_noised, bkps, result_noise)
+    # White noise
+    noise = np.random.normal(0.5, sigma, depth_max)[..., np.newaxis]
+    signals_noised['white'] = np.concatenate([signals_noised['white'], noise], axis = 1)
+    results_noise['white'] = rpt.Binseg(model="rbf").fit(signals_noised['white']).predict(n_bkps=2)
+    bkps_noises['white'].append(results_noise['white'])
+    
+    # Blue noise
+    noise = blue_noise(depth_max)[..., np.newaxis]
+    signals_noised['blue'] = np.concatenate([signals_noised['blue'], noise], axis = 1)
+    results_noise['blue'] = rpt.Binseg(model="rbf").fit(signals_noised['blue']).predict(n_bkps=2)
+    bkps_noises['blue'].append(results_noise['blue'])
+    
+    # Pink noise
+    noise = pink_noise(depth_max)[..., np.newaxis]
+    signals_noised['pink'] = np.concatenate([signals_noised['pink'], noise], axis = 1)
+    results_noise['pink'] = rpt.Binseg(model="rbf").fit(signals_noised['pink']).predict(n_bkps=2)
+    bkps_noises['pink'].append(results_noise['pink'])
+    
+    # Red noise
+    noise = pink_noise(depth_max)[..., np.newaxis]
+    signals_noised['red'] = np.concatenate([signals_noised['red'], noise], axis = 1)
+    results_noise['red'] = rpt.Binseg(model="rbf").fit(signals_noised['red']).predict(n_bkps=2)
+    bkps_noises['red'].append(results_noise['red'])
+'''    
+# For the first subplot, with a white noise
+results_noises = rpt.Binseg(model="rbf").fit(signals_noised['white']).predict(n_bkps=2)
+fig, axs = rpt.display(signals_noised['white'], bkps, results_noises)
 fig.gca().invert_yaxis()
 plt.show()
-
-df = pd.DataFrame(bkps_noise, columns = ['Upper boundary', 'Lower boundary', 'Bottom']).iloc[:,:2]
-df = df - bkps[:2]
-
-fig, axs = plt.subplots(2, 1, sharex=True)
-axs[0].scatter(range(n_noisevars + 1), df['Upper boundary'])
-#axs[0].set_xlabel('Number of noise variables')
-axs[0].set_ylabel('Upper boundary (m)')
-
-axs[1].scatter(range(n_noisevars + 1), df['Lower boundary'])
-axs[1].set_xlabel('Number of noise variables')
-axs[1].set_ylabel('Lower boundary (m)')
-plt.suptitle('Distance to true boundaries')
+'''
 
 
-# detection
-result_noise = rpt.Binseg(model="rbf").fit(signal_noised).predict(n_bkps=2)
-fig, axs = rpt.display(signal_noised, bkps, result_noise)
-fig.gca().invert_yaxis()
-plt.show()
+letters = ['a) ', 'b) ', 'c) ', 'd) ', 'e) ', 'f) ', 'g) ', 'h) ']
+offset = 0
+
+fig, axs = plt.subplots(8, 1, sharex=True, figsize = (7, 18))
+
+for idx, noise_type in enumerate(['white', 'blue', 'pink', 'red']):
+    df = pd.DataFrame(bkps_noises[noise_type], columns = ['Upper boundary',\
+                                                          'Lower boundary', 'Bottom']).iloc[:,:2]
+    df = df - bkps[:2]
+    
+    axs[0 + offset].scatter(range(n_noisevars + 1), df['Upper boundary'])
+    #axs[0].set_xlabel('Number of noise variables')
+    axs[0 + offset].set_ylabel('Upper boundary (m)')
+    axs[0 + offset].set_title(letters[offset] + noise_type.capitalize() +\
+                              '  noise',  loc='left', fontsize = 12)
+    
+    axs[1 + offset].scatter(range(n_noisevars + 1), df['Lower boundary'])
+    axs[1 + offset].set_ylabel('Lower boundary (m)')
+    axs[1 + offset].set_title(letters[offset + 1] + noise_type.capitalize() +\
+                              '  noise',  loc='left', fontsize = 12)
+    
+    offset += 2
+
+axs[-1].set_xlabel('Number of noise variables')
+
+
